@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+
+.marker-orange {
+    width: 16px;
+    height: 16px;
+    background: #de330c;
+    border-radius: 50%;
+}
+
+.marker-green {
+    width: 16px;
+    height: 16px;
+    background: #0e8028;
+    border-radius: 50%;
+}
+
+.marker-blue {
+    width: 16px;
+    height: 16px;
+    background: #0063ce;
+    border-radius: 50%;
+}

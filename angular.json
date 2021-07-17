@@ -31,9 +31,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/leaflet.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/leaflet.js",
+              "src/assets/cache-map.js"
+            ]
           },
           "configurations": {
             "production": {

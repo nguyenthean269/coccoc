@@ -1,0 +1,52 @@
+export interface DiaChi {
+    id: number;
+    soNha: number;
+    ngo: number;
+    ngachHem: number;
+    fullAddress: number;
+    trangThai: number;
+    maNguoiTao: number;
+    tenNguoiTao: number;
+    thoiGianTao: number;
+    maNguoiDuyet: number;
+    tenNguoiDuyet: number;
+    thoiGianSua: number;
+    status: number;
+    latitudeNguoiTao: number;
+    longitudeNguoiTao: number;
+    soTang: number;
+    namXayDung: number;
+    duAnId: number;
+    duAn: number;
+    phuongXaId: number;
+    phuongXa: number;
+    quanHuyenId: number;
+    quanHuyen: number;
+    tinhId: number;
+    tinh: number;
+    duongId: number;
+    duong: number;
+    thonToId: number;
+    thonTo: number;
+    loaiCongTrinhId: number;
+    thuaDatId: number;
+}
+export interface ThuaDat {
+    id: number;
+    idCen: number;
+    latitude: number;
+    longitude: number;
+    trangThai: number;
+    kichThuocMatTien: number;
+    dienTichThuaDat: number;
+    soThua: number;
+    soToBanDo: number;
+    chieuRongMatDuong: number;
+    chieuRongMatDuong2: number;
+    chieuRongMatDuong3: number;
+    kichThuocMatTien2: number;
+    kichThuocMatTien3: number;
+    chieuDaiThuaDat: number;
+    viTriId: number;
+    diaChis: DiaChi[]
+}

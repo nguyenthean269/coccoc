@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api: {
+    SERVER_IMG: `https://d13dxp8d6go1v2.cloudfront.net`,
+    SERVER_GOOGLE_CACHE: `https://gapi.giasan.vn/dev/g-google-cache/v1`,
+    GET_ALL_THUA_DAT: `https://gapi.giasan.vn/dev-coccoc/v1/api/thua-dat/get-all-thua-dat`,
+    // GET_ALL_THUA_DAT: `https://api.rdvngroup.com/dev-coccoc/v1/api/thua-dat/get-all-thua-dat`,
+    GET_ONE_THUA_DAT: `https://gapi.giasan.vn/dev-coccoc/v1/api/thua-dat/get-thua-dat-by-id?thuaDatId=`,
+    // GET_ONE_THUA_DAT: `https://api.rdvngroup.com/dev-coccoc/v1/api/thua-dat/get-thua-dat-by-id?thuaDatId=`,
+    AUTHENTICATION: `https://gapi.giasan.vn/dev-coccoc/v1/api/auth/login`,
+    HTTP_GET_ADDRESS: `https://gapi.giasan.vn/dev-coccoc/v1/api/public/dia-chi`
+  }
 };
 
 /*
