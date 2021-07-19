@@ -1,51 +1,19 @@
-{{mapService.formSearch.value | json}}
 
-
-
-<form *ngIf="mapService.formSearch" nz-form [formGroup]="mapService.formSearch" nzLayout="inline">
-    <!-- <input formControlName="tinhId" /> -->
-    <nz-form-item style="margin-bottom: 6px;">
-        <nz-form-control style="width: 180px">
-            <nz-select formControlName="tinhId" nzSize="large" nzPlaceHolder="Tỉnh" nzShowSearch>
-                <nz-option *ngFor="let item of mapService.address.danhSach.tinhThanh" [nzValue]="item.id" [nzLabel]="item.ten">
-                </nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item style="margin-bottom: 6px;">
-        <nz-form-control style="width: 180px">
-            <nz-select formControlName="quanId" nzSize="large" nzPlaceHolder="Quận" nzShowSearch>
-                <nz-option *ngFor="let item of mapService.address.danhSach.quanHuyen" [nzValue]="item.id" [nzLabel]="item.ten">
-                </nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item style="margin-bottom: 6px;">
-        <nz-form-control style="width: 180px">
-            <nz-select formControlName="phuongXaId" nzSize="large" nzPlaceHolder="Phường" nzShowSearch>
-                <nz-option *ngFor="let item of mapService.address.danhSach.phuongXa" [nzValue]="item.id" [nzLabel]="item.ten">
-                </nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item style="margin-bottom: 6px;">
-        <nz-form-control style="width: 180px">
-            <nz-select formControlName="duongId" nzSize="large" nzPlaceHolder="Đường" nzShowSearch>
-                <nz-option *ngFor="let item of mapService.address.danhSach.duongPho" [nzValue]="item.id" [nzLabel]="item.ten">
-                </nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item>
-
-</form>
 <app-main></app-main>
 
 
-<nz-modal [(nzVisible)]="mapService.viewThuaDat"
+<nz-modal
+[(nzVisible)]="mapService.viewThuaDat"
+(nzOnCancel)="handleCancel()"
+[nzMaskClosable]="false"
 [nzStyle]="{ top: '50px' }"
     [nzWidth]="800" nzTitle="Bổ sung địa chỉ">
     <ng-container *nzModalContent>
-        <nz-table nzBordered  *ngIf="mapService.thuaDat && mapService.thuaDat.diaChis" #basicTable 
+        <div>Diện tích thửa đất: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.dienTichThuaDat}}m</b></div>
+        <div>Chiều rộng mặt tiền: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong}}m</b></div>
+        <div>Chiều rộng mặt tiền 2: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong2}}m</b></div>
+        <div>Chiều rộng mặt tiền 3: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong3}}m</b></div>
+        <nz-table nzBordered  *ngIf="mapService.thuaDat && mapService.thuaDat.diaChis" 
         [nzShowPagination]="false"
         [nzWidth]="800"
         [nzData]="mapService.thuaDat.diaChis">
@@ -56,21 +24,36 @@
                 <th>Tên người duyệt</th>
                 <th>Trạng thái</th>
                 <th>Thời gian nhập</th>
+                <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of mapService.thuaDat.diaChis">
+              <tr *ngFor="let data of mapService.thuaDat.diaChis; index as i">
                 <td>
-                    {{data.duong}}
-                    <button nz-button [nzSize]="'small'" nzShape="round" nzType="primary" (click)="mapService.openPopupSuaDiaChi(data)">
-                        <!-- <i nz-icon nzType="edit" nzTheme="outline"></i> -->
-                        Sửa
-                    </button>
+                    Số nhà {{data.soNha}}
+                    <span *ngIf="data.ngach">, ngách {{data.ngach}}</span>
+                    <span *ngIf="data.ngo">, ngõ {{data.ngo}}</span>
+                    , {{data.duong}}
+                    , {{data.phuongXa}}
+                    , {{data.quanHuyen}}
+                    , {{data.tinh}}
+
                 </td>
                 <td>{{data.tenNguoiTao}}</td>
                 <td>{{data.tenNguoiDuyet}}</td>
-                <td>{{data.trangThai}}</td>
+                <td>
+                    <!-- {{data.trangThai}} -->
+                    <div *ngIf="authService.hasAuthorize('BO_SUNG_DU_LIEU') && !authService.hasAuthorize('DUYET_DU_LIEU')">{{data.trangThai}}</div>
+                    <nz-select *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nzSize="medium" [(ngModel)]="data.trangThai" (ngModelChange)="mapService.updateTrangThai($event, data)" nzPlaceHolder="Trạng thái" nzShowSearch>
+                        <nz-option *ngFor="let item of mapService.trangThaiDiaChi" [nzValue]="item" [nzLabel]="item">
+                        </nz-option>
+                    </nz-select>
+                </td>
                 <td>{{data.thoiGianTao}}</td>
+                <td>
+                    <button nz-button [nzSize]="'small'" nzShape="round" nzType="primary" (click)="mapService.openPopupSuaDiaChi(data)">Sửa</button>
+                    <button *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" nzDanger (click)="mapService.xoaDiaChi()">Xóa</button>
+                </td>
               </tr>
               <tr>
                 <td colspan="5">
@@ -82,15 +65,16 @@
     </ng-container>
     <div *nzModalFooter>
         <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
-        <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Lưu</button>
+        <button nz-button nzType="primary" (click)="mapService.luuCacDiaChi()" [nzLoading]="isConfirmLoading">Lưu</button>
     </div>
 </nz-modal>
 
 <nz-modal [(nzVisible)]="mapService.themDiaChiPopup"
+    [nzMaskClosable]="false"
     [nzWidth]="450" 
     nzTitle="Thêm địa chỉ" (nzOnCancel)="themDiaChiCancel()" (nzOnOk)="themDiaChiOk()">
     <ng-container *nzModalContent>
-        <pre>{{mapService.formAddressAdd.value | json}}</pre>
+        <!-- <pre>{{mapService.formAddressAdd.value | json}}</pre> -->
         <form class="form-them-dia-chi" *ngIf="mapService.formAddressAdd" nz-form [formGroup]="mapService.formAddressAdd">
             <!-- <input formControlName="tinhId" /> -->
             <nz-form-item>
@@ -103,9 +87,9 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="quanId">Quận/Huyện</nz-form-label>
+                <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="quanHuyenId">Quận/Huyện</nz-form-label>
                 <nz-form-control  [nzSm]="12" [nzXs]="24">
-                    <nz-select formControlName="quanId" nzSize="medium" nzPlaceHolder="Quận" nzShowSearch>
+                    <nz-select formControlName="quanHuyenId" nzSize="medium" nzPlaceHolder="Quận" nzShowSearch>
                         <nz-option *ngFor="let item of mapService.addressAdd.danhSach.quanHuyen" [nzValue]="item.id" [nzLabel]="item.ten">
                         </nz-option>
                     </nz-select>
@@ -147,10 +131,28 @@
                   <input nz-input formControlName="soNha" placeholder="Số nhà" />
                 </nz-form-control>
             </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="tinhTrangNha">Tình trạng nhà</nz-form-label>
+                <nz-form-control [nzSm]="12" [nzXs]="24">
+                    <nz-select  formControlName="tinhTrangNha" nzSize="medium" nzPlaceHolder="Tình trạng nhà" nzShowSearch>
+                        <nz-option *ngFor="let item of mapService.tinhTrangNhas" [nzValue]="item" [nzLabel]="item">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="10" [nzXs]="24" nzRequired nzFor="tinhId">Loại công trình</nz-form-label>
+                <nz-form-control [nzSm]="12" [nzXs]="24">
+                    <nz-select  formControlName="loaiCongTrinhId" nzSize="medium" nzPlaceHolder="Loại công trình" nzShowSearch>
+                        <nz-option *ngFor="let item of mapService.loaiCongTrinhs" [nzValue]="item.id" [nzLabel]="item.ten">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
         </form>
     </ng-container>
     <div *nzModalFooter>
-        <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>
+        <button nz-button nzType="default" (click)="themDiaChiCancel()">Hủy</button>
         <button nz-button nzType="primary" [disabled]="!mapService.formAddressAdd.valid" (click)="mapService.themDiaChi()" >Thêm</button>
     </div>
 </nz-modal>

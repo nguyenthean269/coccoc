@@ -104,6 +104,10 @@ export class Address {
         //         idPre: initParams.tinhId
         //     })
         // }
+        if (typeof callback === 'function') {
+            callback();
+        }
+        
     }
 
     getTinh(): void {
@@ -176,6 +180,28 @@ export class Address {
             type: "quan",
             idPre: id
         });
+        const tinhThanh = this.danhSach.tinhThanh.find(a => a.id === id);
+        if (tinhThanh) {
+            this.currentAddress.tinhThanh = {
+                id: id,
+                tienTo: tinhThanh.tienTo,
+                ten: tinhThanh.ten
+            };
+        } else {
+            this.currentAddress.tinhThanh = {
+                id: null,
+                tienTo: null,
+                ten: null
+            };
+        }
+        this.resetCurrentAddress('quanHuyen');
+        this.resetCurrentAddress('phuongXa');
+        this.resetCurrentAddress('thonXom');
+        this.resetCurrentAddress('duongPho');
+        this.resetCurrentAddress('ngo');
+        this.resetCurrentAddress('ngach');
+        this.resetCurrentAddress('soNha');
+        this.valueChanges.next(this.currentAddress);
     }
     selectQuan(id: number): void {
         this.getPhuong({
@@ -186,6 +212,23 @@ export class Address {
             type: "duong",
             idPre: id
         });
+        const quanHuyen = this.danhSach.quanHuyen.find(a => a.id === id);
+        if (quanHuyen) {
+            this.currentAddress.quanHuyen = {
+                id: id,
+                tienTo: quanHuyen.tienTo,
+                ten: quanHuyen.ten
+            };
+        } else {
+            this.currentAddress.quanHuyen = {
+                id: null,
+                tienTo: null,
+                ten: null
+            };
+        }
+        this.resetCurrentAddress('duongPho');
+        this.resetCurrentAddress('phuongXa');
+        this.valueChanges.next(this.currentAddress);
     }
     selectPhuong(id: number): void {
         this.getPublicDiaChi('thonXom', 'thonxom', id, null, null);
@@ -211,6 +254,20 @@ export class Address {
             type: "ngo",
             idPre: id
         });
+        const duongPho = this.danhSach.duongPho.find(a => a.id === id);
+        if (duongPho) {
+            this.currentAddress.duongPho = {
+                id: id,
+                tienTo: duongPho.tienTo,
+                ten: duongPho.ten
+            };
+        } else {
+            this.currentAddress.duongPho = {
+                id: null,
+                tienTo: null,
+                ten: null
+            };
+        }
     }
     selectNgo(ngo: string): void {
         this.getPublicDiaChi('ngach', 'ngachhem', this.currentAddress.duongPho.id, 'ngo', ngo);
@@ -249,6 +306,7 @@ export class Address {
                 ten: null
             };
         }
+        
     }
 
     updateDuongList() {

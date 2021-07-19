@@ -1,0 +1,36 @@
+
+.header {
+    display: flex;
+    padding: 0px 30px;
+    .account {
+        margin-left: auto;
+    }
+    .search-tool {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+}
+.legend {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: -5px;
+}
+
+.button-filter {
+    display: none;
+}
+.form-filter {
+    display: flex;
+}
+
+@media (max-width: 800px) {
+    .form-filter {
+        display: none;
+    }
+    .button-filter {
+        display: block;
+    }
+}

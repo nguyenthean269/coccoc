@@ -2,3 +2,37 @@ nz-header {
     background: #fff;
     padding: 0;
 }
+.landing {
+    padding: 0 30px;
+    height: calc(100vh - 72px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-wrap {
+    overflow: hidden;
+    height: calc(100vh - 64px);
+    img {
+        width: 100%;
+    }
+}
+.request-gps {
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 64px);
+    justify-content: center;
+    align-items: center;
+    .request-gps-warning {
+        font-size: 18px;
+        padding: 0 40px;
+        text-align: center;
+    }
+}
+.login-form {
+    width: 400px;
+    padding: 60px 40px;
+    background: #fff;
+    box-shadow: 0px 0px 20px 9px rgb(226 226 226 / 50%);
+    border-radius: 10px;
+}

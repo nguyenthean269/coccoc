@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth/auth.service';
 import { MapService } from './map.service';
 
 
@@ -11,6 +12,7 @@ import { MapService } from './map.service';
 export class MapComponent implements OnInit {
 
   constructor(
+    public authService: AuthService,
     public mapService: MapService
   ) { }
 

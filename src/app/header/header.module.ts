@@ -8,6 +8,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzFormModule,
     FormsModule,
     ReactiveFormsModule,
-    NzIconModule
+    NzIconModule,
+    NzAlertModule,
+    NzSelectModule,
   ],
   exports: [
     HeaderComponent

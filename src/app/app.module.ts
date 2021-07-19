@@ -10,6 +10,12 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { HeaderModule } from './header/header.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +31,12 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     NzLayoutModule,
     NzDrawerModule,
     HeaderModule,
-    NzModalModule
+    NzModalModule,
+    NzNotificationModule,
+    NzGridModule,
+    NzButtonModule,
+    NzInputModule,
+    NzFormModule
   ],
   providers: [
     {

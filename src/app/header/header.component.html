@@ -1,37 +1,182 @@
-<button nz-button nzType="primary" (click)="open()">Open</button>
+<div class="header">
+  <div class="search-tool" *ngIf="authService.jwt">
+    <button (click)="showFilter = true" class="button-filter" nz-button nzType="primary" [nzSize]="size" nzShape="round">
+      Tìm kiếm
+    </button>
+    <form class="form-filter" *ngIf="mapService.formSearch" nz-form [formGroup]="mapService.formSearch" nzLayout="inline" (ngSubmit)="mapService.search()">
+      <!-- <input formControlName="tinhId" /> -->
+      <nz-form-item style="margin-bottom: 6px;">
+        <nz-form-control style="width: 120px">
+            <nz-select formControlName="userId" nzSize="medium" nzPlaceHolder="Cán bộ" nzShowSearch>
+                <nz-option *ngFor="let item of mapService.danhSachCanBo" [nzValue]="item.id" [nzLabel]="item.username">
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 6px;">
+          <nz-form-control style="width: 120px">
+              <nz-select formControlName="tinhId" nzSize="medium" nzPlaceHolder="Tỉnh" nzShowSearch>
+                  <nz-option *ngFor="let item of mapService.address.danhSach.tinhThanh" [nzValue]="item.id" [nzLabel]="item.ten">
+                  </nz-option>
+              </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 6px;">
+          <nz-form-control style="width: 120px">
+              <nz-select formControlName="quanId" nzSize="medium" nzPlaceHolder="Quận" nzShowSearch>
+                  <nz-option *ngFor="let item of mapService.address.danhSach.quanHuyen" [nzValue]="item.id" [nzLabel]="item.ten">
+                  </nz-option>
+              </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 6px;">
+          <nz-form-control style="width: 120px">
+              <nz-select formControlName="phuongXaId" nzSize="medium" nzPlaceHolder="Phường" nzShowSearch>
+                  <nz-option *ngFor="let item of mapService.address.danhSach.phuongXa" [nzValue]="item.id" [nzLabel]="item.ten">
+                  </nz-option>
+              </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 6px;">
+          <nz-form-control style="width: 120px">
+              <nz-select formControlName="duongId" nzSize="medium" nzPlaceHolder="Đường" nzShowSearch>
+                  <nz-option *ngFor="let item of mapService.address.danhSach.duongPho" [nzValue]="item.id" [nzLabel]="item.ten">
+                  </nz-option>
+              </nz-select>
+          </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin-bottom: 6px;">
+        <nz-form-control style="width: 180px">
+            <nz-select formControlName="trangThaiThuaDat" nzSize="medium" nzPlaceHolder="Trạn thái" nzShowSearch nzAllowClear>
+                <nz-option nzCustomContent *ngFor="let item of mapService.trangThaiThuaDat; index as i" [nzValue]="item" [nzLabel]="item">
+                  <span class="legend" [ngStyle]="{'background': mapService.color[i]}"></span> {{item}}
+                </nz-option>
+            </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <button nzSize="medium" nz-button nzType="primary">Tìm kiếm</button>
+    </form>
+  </div>
+  <div class="account">
+    <!-- {{authService.authorities | json}} -->
+    <!-- <button *ngIf="!authService.jwt" nzShape="round" nzSize="large" nz-button nzType="primary" (click)="openLoginForm()">Đăng nhập</button> -->
+    <button *ngIf="authService.jwt" nzShape="round" nzSize="medium" nz-button nzType="primary" (click)="open()">Xin chào, {{authService.username}}</button>
+  </div>
+</div>
+
+
+
+
 
 <nz-drawer
 [nzClosable]="false"
-[nzVisible]="visible"
+[nzVisible]="authService.visible"
 nzPlacement="left"
-nzTitle="Basic Drawer"
+[nzTitle]="'Xin chào, ' + authService.username"
 (nzOnClose)="close()"
 >
 <ng-container *nzDrawerContent>
-    <button nzSize="large" nz-button nzType="primary" (click)="openLoginForm()" nzShape="round">Đăng nhập</button>
+    <button nzSize="medium" nz-button nzType="primary" (click)="authService.logout(); authService.visible = false" nzShape="round">Đăng xuất</button>
 </ng-container>
 </nz-drawer>
 
-<nz-modal [(nzVisible)]="loginOpen" nzTitle="Đăng nhập" [nzFooter]="tplFooter" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<nz-modal [(nzVisible)]="authService.loginOpen" nzTitle="Đăng nhập" [nzFooter]="tplFooter" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
     <ng-container *nzModalContent>
-        <form nz-form [formGroup]="form" class="login-form" (ngSubmit)="submitForm()">
-            <nz-form-item>
-              <nz-form-control nzErrorTip="Vui lòng nhập tên đăng nhập!">
-                <nz-input-group>
-                  <input nzSize="large" type="text" nz-input formControlName="username" placeholder="Tên đăng nhập" />
-                </nz-input-group>
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-              <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
-                <nz-input-group>
-                  <input nzSize="large" type="password" nz-input formControlName="password" placeholder="Mật khẩu" />
-                </nz-input-group>
-              </nz-form-control>
-            </nz-form-item>
-            <button nzSize="large" nz-button class="login-form-button login-form-margin" [nzType]="'primary'" nzShape="round">Đăng nhập</button>
-        </form>
+      <nz-alert
+        *ngIf="loginFalse"
+        style="margin-bottom: 10px"
+        nzType="error"
+        nzCloseable
+        nzMessage="Đăng nhập thất bại"
+        nzDescription="Vui lòng kiểm tra lại tên đăng nhập hoặc mật khẩu"
+        (nzOnClose)="afterClose()"
+      ></nz-alert>
+      <form nz-form [formGroup]="authService.form" class="login-form" (ngSubmit)="authService.login()">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Vui lòng nhập tên đăng nhập!">
+              <nz-input-group nzSize="medium">
+                <input type="text" nz-input formControlName="username" placeholder="Tên đăng nhập" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+              <nz-input-group nzSize="medium">
+                <input type="password" nz-input formControlName="password" placeholder="Mật khẩu" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <button nzSize="medium" nz-button class="login-form-button login-form-margin" [nzType]="'primary'" nzShape="round">Đăng nhập</button>
+      </form>
     </ng-container>
 </nz-modal>
 
 <ng-template #tplFooter></ng-template>
+
+
+
+<nz-modal
+[(nzVisible)]="showFilter"
+(nzOnCancel)="showFilter = false"
+[nzMaskClosable]="false"
+[nzStyle]="{ top: '50px' }"
+    [nzWidth]="800" nzTitle="Tìm kiếm">
+    <ng-container *nzModalContent>
+      <form *ngIf="mapService.formSearch" nz-form [formGroup]="mapService.formSearch" nzLayout="inline" (ngSubmit)="mapService.search()">
+        <!-- <input formControlName="tinhId" /> -->
+        <nz-form-item style="margin-bottom: 6px;">
+          <nz-form-control style="width: 120px">
+              <nz-select formControlName="userId" nzSize="medium" nzPlaceHolder="Cán bộ" nzShowSearch>
+                  <nz-option *ngFor="let item of mapService.danhSachCanBo" [nzValue]="item.id" [nzLabel]="item.username">
+                  </nz-option>
+              </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 6px;">
+            <nz-form-control style="width: 120px">
+                <nz-select formControlName="tinhId" nzSize="medium" nzPlaceHolder="Tỉnh" nzShowSearch>
+                    <nz-option *ngFor="let item of mapService.address.danhSach.tinhThanh" [nzValue]="item.id" [nzLabel]="item.ten">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 6px;">
+            <nz-form-control style="width: 120px">
+                <nz-select formControlName="quanId" nzSize="medium" nzPlaceHolder="Quận" nzShowSearch>
+                    <nz-option *ngFor="let item of mapService.address.danhSach.quanHuyen" [nzValue]="item.id" [nzLabel]="item.ten">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 6px;">
+            <nz-form-control style="width: 120px">
+                <nz-select formControlName="phuongXaId" nzSize="medium" nzPlaceHolder="Phường" nzShowSearch>
+                    <nz-option *ngFor="let item of mapService.address.danhSach.phuongXa" [nzValue]="item.id" [nzLabel]="item.ten">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 6px;">
+            <nz-form-control style="width: 120px">
+                <nz-select formControlName="duongId" nzSize="medium" nzPlaceHolder="Đường" nzShowSearch>
+                    <nz-option *ngFor="let item of mapService.address.danhSach.duongPho" [nzValue]="item.id" [nzLabel]="item.ten">
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="margin-bottom: 6px;">
+          <nz-form-control style="width: 180px">
+              <nz-select formControlName="trangThaiThuaDat" nzSize="medium" nzPlaceHolder="Trạn thái" nzShowSearch nzAllowClear>
+                  <nz-option nzCustomContent *ngFor="let item of mapService.trangThaiThuaDat; index as i" [nzValue]="item" [nzLabel]="item">
+                    <span class="legend" [ngStyle]="{'background': mapService.color[i]}"></span> {{item}}
+                  </nz-option>
+              </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <button nzSize="medium" nz-button nzType="primary">Tìm kiếm</button>
+      </form>
+    </ng-container>
+    <div *nzModalFooter>
+      
+  </div>
+</nz-modal>

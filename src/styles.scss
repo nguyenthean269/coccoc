@@ -1,23 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";
 
-.marker-orange {
-    width: 16px;
-    height: 16px;
-    background: #de330c;
+.marker-red {
+    width: 20px;
+    height: 20px;
+    background: #de0c0c;
     border-radius: 50%;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .marker-green {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     background: #0e8028;
     border-radius: 50%;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.marker-yellow {
+    width: 20px;
+    height: 20px;
+    background: #ceab00;
+    border-radius: 50%;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .marker-blue {
-    width: 16px;
-    height: 16px;
-    background: #0063ce;
+    width: 20px;
+    height: 20px;
+    background: #17bd3d;
     border-radius: 50%;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.marker-pink {
+    width: 20px;
+    height: 20px;
+    background: #696969;
+    border-radius: 50%;
+    color: #ffffff;
+    font-weight: 700;
 }

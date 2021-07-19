@@ -3,6 +3,34 @@
   <nz-header>
     <app-header></app-header>
   </nz-header>
-  <nz-content><router-outlet></router-outlet></nz-content>
+  <nz-content *ngIf="authService.jwt && authService.allowPosition"><router-outlet></router-outlet></nz-content>
+  <nz-content *ngIf="!(authService.jwt && authService.allowPosition)">
+    <div *ngIf="!authService.jwt" class="landing">
+      <form nz-form [formGroup]="authService.form" class="login-form" (ngSubmit)="authService.login()">
+        <nz-form-item>
+          <h3>Đăng nhập</h3>
+          <p>Vui lòng đăng nhập để sử dụng</p>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập tên đăng nhập!">
+            <nz-input-group nzSize="large">
+              <input type="text" nz-input formControlName="username" placeholder="Tên đăng nhập" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Vui lòng nhập mật khẩu!">
+            <nz-input-group nzSize="large">
+              <input type="password" nz-input formControlName="password" placeholder="Mật khẩu" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <button nzSize="large" [nzLoading]="authService.loging" nz-button class="login-form-button login-form-margin" [nzType]="'primary'" nzShape="round">Đăng nhập</button>
+      </form>
+    </div>
+    <div *ngIf="authService.jwt && !authService.allowPosition" class="request-gps">
+      <div class="request-gps-warning">Vui lòng bật GPS và cấp quyền truy cập vị trí để tiếp tục sử dụng</div>
+    </div>
+  </nz-content>
   <!-- <nz-footer>Footer</nz-footer> -->
 </nz-layout>
