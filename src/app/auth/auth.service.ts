@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -30,9 +31,10 @@ export class AuthService {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private notification: NzNotificationService
   ) {
-
+    this.allowPosition = false;
     this.form = this.fb.group({
       username: this.fb.control(null, [Validators.required]),
       password: this.fb.control(null, [Validators.required])
@@ -57,14 +59,13 @@ export class AuthService {
           this.getCurrentPosition();
         }
         result.onchange = () => {
-          console.log(result.state);
-          if (result.state === 'denied') {
-            this.allowPosition = false;
-            this.getCurrentPosition();
-          } else if (result.state === 'granted') {
+          if (result.state == 'granted') {
             this.allowPosition = true;
             this.getCurrentPosition();
           } else if (result.state == 'prompt') {
+            this.allowPosition = false;
+            this.getCurrentPosition();
+          } else if (result.state == 'denied') {
             this.allowPosition = false;
             this.getCurrentPosition();
           }
@@ -81,6 +82,9 @@ export class AuthService {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         }
+      }, err => {
+        // console.log('err', err);
+        this.notification.error('Yêu cầu truy cập vị trí', err.message);
       });
     } else {
       return null;

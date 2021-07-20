@@ -17,7 +17,16 @@ export class MapComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+    document.body.style.position = 'fixed';
+    document.body.style.top = '0';
+    document.body.style.bottom = '0';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.body.style.overflow = 'hidden';
+    document.body.style.width = '100%';
+    document.body.style.height = `${window.innerHeight}px`;
   }
   handleCancel() {
     this.mapService.viewThuaDat = false;

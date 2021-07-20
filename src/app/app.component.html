@@ -29,8 +29,10 @@
       </form>
     </div>
     <div *ngIf="authService.jwt && !authService.allowPosition" class="request-gps">
-      <div class="request-gps-warning">Vui lòng bật GPS và cấp quyền truy cập vị trí để tiếp tục sử dụng</div>
+      <div class="request-gps-warning">
+        <div style="margin-bottom: 10px">Vui lòng bật GPS và cấp quyền truy cập vị trí để tiếp tục sử dụng</div>
+        <button (click)="authService.getCurrentPosition()" nz-button nzSize="medium" [nzType]="'primary'" nzShape="round">Yêu cầu truy cập</button>
+      </div>
     </div>
   </nz-content>
-  <!-- <nz-footer>Footer</nz-footer> -->
 </nz-layout>

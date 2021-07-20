@@ -420,7 +420,7 @@ export class MapService {
       this.notification.create(
         'error',
         'Thông báo',
-        'Lưu địa chỉ thành công.'
+        `${error.message}`
       );
     });
   }
