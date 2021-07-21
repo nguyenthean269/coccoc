@@ -9,94 +9,99 @@
 [nzStyle]="{ top: '50px' }"
     [nzWidth]="800" nzTitle="Bổ sung địa chỉ">
     <ng-container *nzModalContent>
-        <div>Diện tích thửa đất: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.dienTichThuaDat}}m</b></div>
-        <div>Chiều rộng mặt tiền: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong}}m</b></div>
-        <div>Chiều rộng mặt tiền 2: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong2}}m</b></div>
-        <div>Chiều rộng mặt tiền 3: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong3}}m</b></div>
+        <div *ngIf="mapService.loading.getThuaDat" class="loading">
+            <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+        </div>
+        <div *ngIf="!mapService.loading.getThuaDat">
+            <div>Diện tích thửa đất: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.dienTichThuaDat}}m</b></div>
+            <div>Chiều rộng mặt tiền: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong}}m</b></div>
+            <div>Chiều rộng mặt tiền 2: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong2}}m</b></div>
+            <div>Chiều rộng mặt tiền 3: <b *ngIf="mapService.thuaDat">{{mapService.thuaDat.chieuRongMatDuong3}}m</b></div>
 
-        <div class="table-mobile" *ngIf="mapService.thuaDat && mapService.thuaDat.diaChis" >
-            <h4> Địa chỉ</h4>
-            <div class="mobile-item" *ngFor="let data of mapService.thuaDat.diaChis; index as i">
-                <div class="left">
-                    <div>Số nhà {{data.soNha}}
+            <div class="table-mobile" *ngIf="mapService.thuaDat && mapService.thuaDat.diaChis" >
+                <h4> Địa chỉ</h4>
+                <div class="mobile-item" *ngFor="let data of mapService.thuaDat.diaChis; index as i">
+                    <div class="left">
+                        <div>Số nhà {{data.soNha}}
+                            <span *ngIf="data.ngach">, ngách {{data.ngach}}</span>
+                            <span *ngIf="data.ngo">, ngõ {{data.ngo}}</span>
+                            , {{data.duong}}
+                            , {{data.phuongXa}}
+                            , {{data.quanHuyen}}
+                            , {{data.tinh}}</div>
+                        <div class="mobile-status">
+                            <div class="name">
+                                <nz-tag class="mb-1" [nzColor]="'#ceab00'">Bổ sung: {{data.tenNguoiTao}}</nz-tag>
+                                <nz-tag [nzColor]="'#17bd3d'">Duyệt: {{data.tenNguoiDuyet}}</nz-tag>
+                            </div>
+                            <div>
+                                <!-- <button class="mb-1" style="margin-right: 2px" nzSize="small" [nzTooltipTitle]="data.thoiGianTao" nzTooltipPlacement="top" nz-button nz-tooltip>T</button> -->
+                                <div *ngIf="authService.hasAuthorize('BO_SUNG_DU_LIEU') && !authService.hasAuthorize('DUYET_DU_LIEU')">{{data.trangThai}}</div>
+                                <nz-select nzSize="small" *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" [(ngModel)]="data.trangThai" (ngModelChange)="mapService.updateTrangThai($event, data)" nzPlaceHolder="Trạng thái" nzShowSearch>
+                                    <nz-option *ngFor="let item of mapService.trangThaiDiaChi" [nzValue]="item" [nzLabel]="item">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <button class="mb-1" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" (click)="mapService.openPopupSuaDiaChi(data)">Sửa</button>
+                        <button *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" nzDanger (click)="mapService.xoaDiaChi()">Xóa</button>
+                    </div>
+                </div>
+                <hr>
+                <button nz-button nzType="primary" (click)="mapService.openPopupThemDiaChi()">Tạo mới địa chỉ</button>
+            </div>
+            <nz-table class="table-desktop" nzBordered  *ngIf="mapService.thuaDat && mapService.thuaDat.diaChis" 
+            [nzShowPagination]="false"
+            [nzWidth]="800"
+            [nzData]="mapService.thuaDat.diaChis">
+                <thead>
+                <tr>
+                    <th>Địa chỉ</th>
+                    <th>Tên người bổ sung</th>
+                    <th>Tên người duyệt</th>
+                    <th>Trạng thái</th>
+                    <th>Thời gian nhập</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of mapService.thuaDat.diaChis; index as i">
+                    <td>
+                        Số nhà {{data.soNha}}
                         <span *ngIf="data.ngach">, ngách {{data.ngach}}</span>
                         <span *ngIf="data.ngo">, ngõ {{data.ngo}}</span>
                         , {{data.duong}}
                         , {{data.phuongXa}}
                         , {{data.quanHuyen}}
-                        , {{data.tinh}}</div>
-                    <div class="mobile-status">
-                        <div class="name">
-                            <nz-tag class="mb-1" [nzColor]="'#ceab00'">Bổ sung: {{data.tenNguoiTao}}</nz-tag>
-                            <nz-tag [nzColor]="'#17bd3d'">Duyệt: {{data.tenNguoiDuyet}}</nz-tag>
-                        </div>
-                        <div>
-                            <button class="mb-1" style="margin-right: 2px" nzSize="small" [nzTooltipTitle]="data.thoiGianTao" nzTooltipPlacement="top" nz-button nz-tooltip>T</button>
-                            <div *ngIf="authService.hasAuthorize('BO_SUNG_DU_LIEU') && !authService.hasAuthorize('DUYET_DU_LIEU')">{{data.trangThai}}</div>
-                            <nz-select nzSize="small" *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" [(ngModel)]="data.trangThai" (ngModelChange)="mapService.updateTrangThai($event, data)" nzPlaceHolder="Trạng thái" nzShowSearch>
-                                <nz-option *ngFor="let item of mapService.trangThaiDiaChi" [nzValue]="item" [nzLabel]="item">
-                                </nz-option>
-                            </nz-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="right">
-                    <button class="mb-1" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" (click)="mapService.openPopupSuaDiaChi(data)">Sửa</button>
-                    <button *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" nzDanger (click)="mapService.xoaDiaChi()">Xóa</button>
-                </div>
-            </div>
-            <hr>
-            <button nz-button nzType="primary" (click)="mapService.openPopupThemDiaChi()">Tạo mới địa chỉ</button>
-        </div>
-        <nz-table class="table-desktop" nzBordered  *ngIf="mapService.thuaDat && mapService.thuaDat.diaChis" 
-        [nzShowPagination]="false"
-        [nzWidth]="800"
-        [nzData]="mapService.thuaDat.diaChis">
-            <thead>
-              <tr>
-                <th>Địa chỉ</th>
-                <th>Tên người bổ sung</th>
-                <th>Tên người duyệt</th>
-                <th>Trạng thái</th>
-                <th>Thời gian nhập</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of mapService.thuaDat.diaChis; index as i">
-                <td>
-                    Số nhà {{data.soNha}}
-                    <span *ngIf="data.ngach">, ngách {{data.ngach}}</span>
-                    <span *ngIf="data.ngo">, ngõ {{data.ngo}}</span>
-                    , {{data.duong}}
-                    , {{data.phuongXa}}
-                    , {{data.quanHuyen}}
-                    , {{data.tinh}}
+                        , {{data.tinh}}
 
-                </td>
-                <td>{{data.tenNguoiTao}}</td>
-                <td>{{data.tenNguoiDuyet}}</td>
-                <td>
-                    <!-- {{data.trangThai}} -->
-                    <div *ngIf="authService.hasAuthorize('BO_SUNG_DU_LIEU') && !authService.hasAuthorize('DUYET_DU_LIEU')">{{data.trangThai}}</div>
-                    <nz-select *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nzSize="medium" [(ngModel)]="data.trangThai" (ngModelChange)="mapService.updateTrangThai($event, data)" nzPlaceHolder="Trạng thái" nzShowSearch>
-                        <nz-option *ngFor="let item of mapService.trangThaiDiaChi" [nzValue]="item" [nzLabel]="item">
-                        </nz-option>
-                    </nz-select>
-                </td>
-                <td>{{data.thoiGianTao}}</td>
-                <td>
-                    <button nz-button [nzSize]="'small'" nzShape="round" nzType="primary" (click)="mapService.openPopupSuaDiaChi(data)">Sửa</button>
-                    <button *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" nzDanger (click)="mapService.xoaDiaChi()">Xóa</button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="5">
-                    <button nz-button nzType="primary" (click)="mapService.openPopupThemDiaChi()">Tạo mới địa chỉ</button>
-                </td>
-              </tr>
-            </tbody>
-        </nz-table>
+                    </td>
+                    <td>{{data.tenNguoiTao}}</td>
+                    <td>{{data.tenNguoiDuyet}}</td>
+                    <td>
+                        <!-- {{data.trangThai}} -->
+                        <div *ngIf="authService.hasAuthorize('BO_SUNG_DU_LIEU') && !authService.hasAuthorize('DUYET_DU_LIEU')">{{data.trangThai}}</div>
+                        <nz-select *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nzSize="medium" [(ngModel)]="data.trangThai" (ngModelChange)="mapService.updateTrangThai($event, data)" nzPlaceHolder="Trạng thái" nzShowSearch>
+                            <nz-option *ngFor="let item of mapService.trangThaiDiaChi" [nzValue]="item" [nzLabel]="item">
+                            </nz-option>
+                        </nz-select>
+                    </td>
+                    <td>{{data.thoiGianTao}}</td>
+                    <td>
+                        <button nz-button [nzSize]="'small'" nzShape="round" nzType="primary" (click)="mapService.openPopupSuaDiaChi(data)">Sửa</button>
+                        <button *ngIf="authService.hasAuthorize('DUYET_DU_LIEU')" nz-button [nzSize]="'small'" nzShape="round" nzType="primary" nzDanger (click)="mapService.xoaDiaChi()">Xóa</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <button nz-button nzType="primary" (click)="mapService.openPopupThemDiaChi()">Tạo mới địa chỉ</button>
+                    </td>
+                </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </ng-container>
     <div *nzModalFooter>
         <button nz-button nzType="default" (click)="handleCancel()">Hủy</button>

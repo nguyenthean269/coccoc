@@ -6,7 +6,11 @@
         width: 100%
     }
 }
-
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .mobile-item {
     padding: 10px 0px;
     border-top: 1px solid #e6e6e6;

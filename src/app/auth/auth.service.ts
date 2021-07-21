@@ -46,13 +46,15 @@ export class AuthService {
     this.authorities = [];
     this.authenticated.next(false);
 
+    this.getCurrentPosition();
+
     if (navigator && navigator.permissions) {
       navigator.permissions.query({name:'geolocation'}).then(result => {
         if (result.state == 'granted') {
           this.allowPosition = true;
           this.getCurrentPosition();
         } else if (result.state == 'prompt') {
-          this.allowPosition = false;
+          this.allowPosition = true;
           this.getCurrentPosition();
         } else if (result.state == 'denied') {
           this.allowPosition = false;
@@ -63,7 +65,7 @@ export class AuthService {
             this.allowPosition = true;
             this.getCurrentPosition();
           } else if (result.state == 'prompt') {
-            this.allowPosition = false;
+            this.allowPosition = true;
             this.getCurrentPosition();
           } else if (result.state == 'denied') {
             this.allowPosition = false;
@@ -81,12 +83,16 @@ export class AuthService {
         this.position = {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
-        }
+        };
+        this.allowPosition = true;
       }, err => {
         // console.log('err', err);
         this.notification.error('Yêu cầu truy cập vị trí', err.message);
+      }, {
+        enableHighAccuracy: true
       });
     } else {
+      this.notification.error('Yêu cầu truy cập vị trí ', 'Not support navigator.geolocation');
       return null;
     } 
   }

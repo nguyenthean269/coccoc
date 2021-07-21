@@ -28,12 +28,20 @@ export class MapService {
   public trangThaiDiaChi: any;
   public loaiCongTrinhs: any;
   public tinhTrangNhas: any;
+
+  public loading: any;
+
   constructor(
     public http: HttpClient,
     private fb: FormBuilder,
     private authService: AuthService,
     private notification: NzNotificationService
   ) {
+    this.loading = {
+      getThuaDat: false,
+      getAllThuaDat: false
+    };
+
     this.allowFitbounds = true;
     this.layer = {
       rootLayer: null,
@@ -69,6 +77,7 @@ export class MapService {
       ngach: this.fb.control(null),
       trangThaiThuaDat: this.fb.control(null),
       userId: this.fb.control(null),
+      size: 500
     });
     
 
@@ -214,13 +223,16 @@ export class MapService {
     return icon[trangThai];
   }
   getAllThuaDat(params): void {
+    this.loading.getAllThuaDat = true;
     this.layer.CEN_DA_BO_SUNG.clearLayers();
     this.layer.CHO_BO_SUNG.clearLayers();
     this.layer.DA_BO_SUNG.clearLayers();
     this.layer.DA_PHE_DUYET.clearLayers();
     this.layer.KHONG_DUYET.clearLayers();
 
-    this.http.post<any>(`${environment.api.GET_ALL_THUA_DAT}`, params).subscribe(res => {
+    const size = window.innerWidth < 576 ? 500 : 1000;
+    this.http.post<any>(`${environment.api.GET_ALL_THUA_DAT}?size=${size}`, params).subscribe(res => {
+      this.loading.getAllThuaDat = false;
       console.log(res.payload.data.content);
       const data = res.payload.data.content;
       const arrayFitbounds = [];
@@ -293,6 +305,7 @@ export class MapService {
         this.notification.info('Kết quả tìm kiếm', 'Không tìm thấy thửa đất nào', { nzPlacement: 'bottomRight' });
       }
     }, err => {
+      this.loading.getAllThuaDat = false;
       this.notification.error('Kết quả tìm kiếm', err.message, { nzPlacement: 'bottomRight' });
     });
   }
@@ -313,7 +326,9 @@ export class MapService {
   }
 
   getThuaDat(id: number): void {
+    this.loading.getThuaDat = true;
     this.http.get<any>(`${environment.api.GET_ONE_THUA_DAT}${id}`).subscribe(res => {
+      this.loading.getThuaDat = false;
       if (res.status === 0) {
         this.thuaDat = res.payload.data;
         console.log(this.thuaDat);

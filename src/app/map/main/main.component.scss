@@ -1,3 +1,12 @@
+.loading {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1000;
+    background: rgba(255,255,255,.6);
+    padding: 2px 12px;
+    font-weight: 700;
+}
 .tool {
     position: fixed;
     bottom: 30px;

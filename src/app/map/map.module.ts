@@ -15,6 +15,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 const routes: Routes = [
   {path: '', component: MapComponent}
@@ -40,7 +41,8 @@ const routes: Routes = [
     NzInputModule,
     NzNotificationModule,
     NzTagModule,
-    NzToolTipModule
+    NzToolTipModule,
+    NzSpinModule
   ],
   exports: [
     MapComponent

@@ -15,7 +15,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
-
+import { IconsProviderModule } from './icons-provider.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
     NzGridModule,
     NzButtonModule,
     NzInputModule,
-    NzFormModule
+    NzFormModule,
+    IconsProviderModule
   ],
   providers: [
     {
