@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { MapService } from './map.service';
@@ -13,8 +14,11 @@ export class MapComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    public mapService: MapService
-  ) { }
+    public mapService: MapService,
+    private nzConfigService: NzConfigService
+  ) {
+    this.nzConfigService.set('empty', { nzDefaultEmptyContent: 'Không có dữ liệu' });
+  }
 
   ngOnInit(): void {
     document.body.style.position = 'fixed';

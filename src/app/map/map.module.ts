@@ -16,6 +16,10 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+
 
 const routes: Routes = [
   {path: '', component: MapComponent}
@@ -42,7 +46,10 @@ const routes: Routes = [
     NzNotificationModule,
     NzTagModule,
     NzToolTipModule,
-    NzSpinModule
+    NzSpinModule,
+    NzEmptyModule,
+    NgSelectModule,
+    NzBreadCrumbModule
   ],
   exports: [
     MapComponent

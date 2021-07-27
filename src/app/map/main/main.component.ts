@@ -82,7 +82,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   gotoMyLocation(): void {
     this.authService.getCurrentPosition();
     console.log(this.authService.position);
-    const bounds = L.latLng(this.authService.position.lat, this.authService.position.lng).toBounds(500);
+    const bounds = L.latLng(this.authService.position.lat, this.authService.position.lng).toBounds(150);
     const cenBounds = leafletBoundsToBounds(bounds);
     this.mapService.layer.rootLayer.fitBounds(bounds);
     this.mapService.formSearch.patchValue({

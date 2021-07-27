@@ -1,4 +1,9 @@
 
+ng-select {
+    min-width: 100px;
+    margin-right: 3px;
+}
+
 .header {
     display: flex;
     padding: 0px 30px;
@@ -27,10 +32,22 @@
 }
 
 @media (max-width: 800px) {
+    ng-select {
+        min-width: 50%;
+        margin-right: 3px;
+    }
     .form-filter {
         display: none;
     }
     .button-filter {
         display: block;
     }
+}
+
+.mobile-search {
+    width: 100%;
+}
+.button-wrap {
+    display: flex;
+    justify-content: center;
 }

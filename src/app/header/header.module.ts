@@ -10,6 +10,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzIconModule,
     NzAlertModule,
     NzSelectModule,
+    NgSelectModule,
+    NzGridModule
   ],
   exports: [
     HeaderComponent

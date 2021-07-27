@@ -122,11 +122,12 @@ export class MapService {
       thonXomId: this.fb.control(null),
       quanHuyenId: this.fb.control(null, [Validators.required]),
       tinhId: this.fb.control(null, [Validators.required]),
-      tinh: this.fb.control(null, [Validators.required]),
-      phuongXa: this.fb.control(null, [Validators.required]),
-      quanHuyen: this.fb.control(null, [Validators.required]),
-      duong: this.fb.control(null, [Validators.required]),
+      tinh: this.fb.control(null),
+      phuongXa: this.fb.control(null),
+      quanHuyen: this.fb.control(null),
+      duong: this.fb.control(null),
       soNha: this.fb.control(null, [Validators.required]),
+      soTang: this.fb.control(null),
       ngo: this.fb.control(null),
       ngach: this.fb.control(null),
       tinhTrangNha: this.fb.control(null),
@@ -370,15 +371,16 @@ export class MapService {
     }, {emitEvent: false});
     
   }
-  openPopupThemDiaChi(): void {
+  openPopupThemDiaChi(thuaDat): void {
+    console.log('thuaDat', thuaDat);
     this.themDiaChiPopup = true;
     this.addressAdd = new Address(this.http);
     this.addressAdd.init({
-        tinhId: null,
-        quanHuyenId: null,
-        phuongXaId: null,
+        tinhId: thuaDat.tinhId,
+        quanHuyenId: thuaDat.quanHuyenId,
+        phuongXaId: thuaDat.phuongXaId,
         thonXomId: null,
-        duongId: null,
+        duongId: thuaDat.duongId,
         ngo: null,
         ngach: null,
         soNha: null
@@ -386,11 +388,11 @@ export class MapService {
 
     this.formAddressAdd.patchValue({
       id: null,
-      duongId: null,
-      phuongXaId: null,
+      duongId: thuaDat.duongId,
+      phuongXaId: thuaDat.phuongXaId,
       thonXomId: null,
-      quanHuyenId: null,
-      tinhId: null,
+      quanHuyenId: thuaDat.quanHuyenId,
+      tinhId: thuaDat.tinhId,
       soNha: null,
       ngo: null,
       ngach: null,

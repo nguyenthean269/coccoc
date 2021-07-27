@@ -5,55 +5,70 @@
     </button>
     <form class="form-filter" *ngIf="mapService.formSearch" nz-form [formGroup]="mapService.formSearch" nzLayout="inline" (ngSubmit)="mapService.search()">
       <!-- <input formControlName="tinhId" /> -->
-      <nz-form-item style="margin-bottom: 6px;">
+      <ng-select style="width: 120px" [items]="mapService.danhSachCanBo" formControlName="userId" bindLabel="username" bindValue="id" placeholder="Cán bộ">
+      </ng-select>
+      <ng-select style="width: 120px" [items]="mapService.address.danhSach.tinhThanh" formControlName="tinhId" bindLabel="ten" bindValue="id" placeholder="Tỉnh">
+      </ng-select>
+      <ng-select style="width: 120px" [items]="mapService.address.danhSach.quanHuyen" formControlName="quanId" bindLabel="ten" bindValue="id" placeholder="Quận">
+      </ng-select>
+      <ng-select style="width: 120px" [items]="mapService.address.danhSach.phuongXa" formControlName="phuongXaId" bindLabel="ten" bindValue="id" placeholder="Phường">
+      </ng-select>
+      <ng-select style="width: 120px" [items]="mapService.address.danhSach.duongPho" formControlName="duongId" bindLabel="ten" bindValue="id" placeholder="Đường">
+      </ng-select>
+      <ng-select style="width: 180px" [items]="mapService.trangThaiThuaDat" formControlName="trangThaiThuaDat" placeholder="Trạng thái">
+        <ng-template ng-option-tmp let-item="item" let-index="index">
+          <span class="legend" [ngStyle]="{'background': mapService.color[index]}"></span> {{item}}
+        </ng-template>
+      </ng-select>
+      <!-- <nz-form-item style="margin-bottom: 6px;">
         <nz-form-control style="width: 120px">
             <nz-select formControlName="userId" nzSize="medium" nzPlaceHolder="Cán bộ" nzShowSearch>
                 <nz-option *ngFor="let item of mapService.danhSachCanBo" [nzValue]="item.id" [nzLabel]="item.username">
                 </nz-option>
             </nz-select>
         </nz-form-control>
-      </nz-form-item>
-      <nz-form-item style="margin-bottom: 6px;">
+      </nz-form-item> -->
+      <!-- <nz-form-item style="margin-bottom: 6px;">
           <nz-form-control style="width: 120px">
               <nz-select formControlName="tinhId" nzSize="medium" nzPlaceHolder="Tỉnh" nzShowSearch>
                   <nz-option *ngFor="let item of mapService.address.danhSach.tinhThanh" [nzValue]="item.id" [nzLabel]="item.ten">
                   </nz-option>
               </nz-select>
           </nz-form-control>
-      </nz-form-item>
-      <nz-form-item style="margin-bottom: 6px;">
+      </nz-form-item> -->
+      <!-- <nz-form-item style="margin-bottom: 6px;">
           <nz-form-control style="width: 120px">
               <nz-select formControlName="quanId" nzSize="medium" nzPlaceHolder="Quận" nzShowSearch>
                   <nz-option *ngFor="let item of mapService.address.danhSach.quanHuyen" [nzValue]="item.id" [nzLabel]="item.ten">
                   </nz-option>
               </nz-select>
           </nz-form-control>
-      </nz-form-item>
-      <nz-form-item style="margin-bottom: 6px;">
+      </nz-form-item> -->
+      <!-- <nz-form-item style="margin-bottom: 6px;">
           <nz-form-control style="width: 120px">
               <nz-select formControlName="phuongXaId" nzSize="medium" nzPlaceHolder="Phường" nzShowSearch>
                   <nz-option *ngFor="let item of mapService.address.danhSach.phuongXa" [nzValue]="item.id" [nzLabel]="item.ten">
                   </nz-option>
               </nz-select>
           </nz-form-control>
-      </nz-form-item>
-      <nz-form-item style="margin-bottom: 6px;">
+      </nz-form-item> -->
+      <!-- <nz-form-item style="margin-bottom: 6px;">
           <nz-form-control style="width: 120px">
               <nz-select formControlName="duongId" nzSize="medium" nzPlaceHolder="Đường" nzShowSearch>
                   <nz-option *ngFor="let item of mapService.address.danhSach.duongPho" [nzValue]="item.id" [nzLabel]="item.ten">
                   </nz-option>
               </nz-select>
           </nz-form-control>
-      </nz-form-item>
-      <nz-form-item style="margin-bottom: 6px;">
+      </nz-form-item> -->
+      <!-- <nz-form-item style="margin-bottom: 6px;">
         <nz-form-control style="width: 180px">
-            <nz-select formControlName="trangThaiThuaDat" nzSize="medium" nzPlaceHolder="Trạn thái" nzShowSearch nzAllowClear>
+            <nz-select formControlName="trangThaiThuaDat" nzSize="medium" nzPlaceHolder="Trạng thái" nzShowSearch nzAllowClear>
                 <nz-option nzCustomContent *ngFor="let item of mapService.trangThaiThuaDat; index as i" [nzValue]="item" [nzLabel]="item">
                   <span class="legend" [ngStyle]="{'background': mapService.color[i]}"></span> {{item}}
                 </nz-option>
             </nz-select>
         </nz-form-control>
-      </nz-form-item>
+      </nz-form-item> -->
       <button nzSize="medium" nz-button nzType="primary">Tìm kiếm</button>
     </form>
   </div>
@@ -124,7 +139,7 @@ nzPlacement="left"
     <ng-container *nzModalContent>
       <form *ngIf="mapService.formSearch" nz-form [formGroup]="mapService.formSearch" nzLayout="inline" (ngSubmit)="mapService.search()">
         <!-- <input formControlName="tinhId" /> -->
-        <nz-form-item style="margin-bottom: 6px;">
+        <!-- <nz-form-item style="margin-bottom: 6px;">
           <nz-form-control style="width: 120px">
               <nz-select formControlName="userId" nzSize="medium" nzPlaceHolder="Cán bộ" nzShowSearch>
                   <nz-option *ngFor="let item of mapService.danhSachCanBo" [nzValue]="item.id" [nzLabel]="item.username">
@@ -172,8 +187,47 @@ nzPlacement="left"
                   </nz-option>
               </nz-select>
           </nz-form-control>
-        </nz-form-item>
-        <button nzSize="medium" nz-button nzType="primary">Tìm kiếm</button>
+        </nz-form-item> -->
+        <div class="mobile-search">
+          <div nz-row>
+            <div nz-col [nzSpan]="12" style="margin-bottom: 5px">
+              <ng-select [items]="mapService.danhSachCanBo" formControlName="userId" bindLabel="username" bindValue="id" placeholder="Cán bộ">
+              </ng-select>
+            </div>
+            <div nz-col [nzSpan]="12" style="margin-bottom: 5px">
+              <ng-select [items]="mapService.address.danhSach.tinhThanh" formControlName="tinhId" bindLabel="ten" bindValue="id" placeholder="Tỉnh">
+              </ng-select>
+            </div>
+            <div nz-col [nzSpan]="12" style="margin-bottom: 5px">
+              <ng-select [items]="mapService.address.danhSach.quanHuyen" formControlName="quanId" bindLabel="ten" bindValue="id" placeholder="Quận">
+              </ng-select>
+            </div>
+            <div nz-col [nzSpan]="12" style="margin-bottom: 5px">
+              <ng-select [items]="mapService.address.danhSach.phuongXa" formControlName="phuongXaId" bindLabel="ten" bindValue="id" placeholder="Phường">
+              </ng-select>
+            </div>
+            <div nz-col [nzSpan]="12" style="margin-bottom: 5px">
+              <ng-select [items]="mapService.address.danhSach.duongPho" formControlName="duongId" bindLabel="ten" bindValue="id" placeholder="Đường">
+              </ng-select>
+            </div>
+            <div nz-col [nzSpan]="12" style="margin-bottom: 5px">
+              <ng-select [items]="mapService.trangThaiThuaDat" formControlName="trangThaiThuaDat" placeholder="Trạng thái">
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                  <span class="legend" [ngStyle]="{'background': mapService.color[index]}"></span> {{item}}
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          
+          <div class="button-wrap">
+            <button nzSize="medium" nz-button nzType="primary">Tìm kiếm</button>
+          </div>
+
+
+
+          
+        </div>
+        
       </form>
     </ng-container>
     <div *nzModalFooter>
