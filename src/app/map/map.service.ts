@@ -131,7 +131,8 @@ export class MapService {
       ngo: this.fb.control(null),
       ngach: this.fb.control(null),
       tinhTrangNha: this.fb.control(null),
-      loaiCongTrinhId: this.fb.control(null)
+      loaiCongTrinhId: this.fb.control(null),
+      index: this.fb.control(null)
     });
     this.formAddressAdd.get('tinhId').valueChanges.subscribe(tinhId => {
       this.addressAdd.selectTinh(tinhId);
@@ -337,7 +338,7 @@ export class MapService {
       
     })
   }
-  openPopupSuaDiaChi(data): void {
+  openPopupSuaDiaChi(data, index): void {
     console.log(data);
     this.themDiaChiPopup = true;
     this.addressAdd = new Address(this.http);
@@ -367,7 +368,8 @@ export class MapService {
       quanHuyen: data.quanHuyen,
       duong: data.duong,
       trangThai: data.trangThai,
-      thuaDatId: data.thuaDatId
+      thuaDatId: data.thuaDatId,
+      index: index
     }, {emitEvent: false});
     
   }
@@ -397,17 +399,15 @@ export class MapService {
       ngo: null,
       ngach: null,
       trangThai: 'CHO_PHE_DUYET',
-      thuaDatId: this.thuaDat.id
+      thuaDatId: this.thuaDat.id,
+      index: -1
     }, {emitEvent: false});
   }
   themDiaChi(): void {
-    if (!this.formAddressAdd.value.id) {
+    if (this.formAddressAdd.value.index === -1) {
       this.thuaDat.diaChis.push(this.formAddressAdd.value);
     } else {
-      const findIdx = this.thuaDat.diaChis.findIndex(a => a.id === this.formAddressAdd.value.id);
-      if (findIdx !== -1) {
-        this.thuaDat.diaChis[findIdx] = this.formAddressAdd.value;
-      }
+      this.thuaDat.diaChis[this.formAddressAdd.value.index] = this.formAddressAdd.value;
     }
     
     this.themDiaChiPopup = false;
